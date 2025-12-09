@@ -16,6 +16,7 @@ int main(){
     std::cin >> operation;
 
     // switch goes here
+    
 
     std::cout << "The result is " << result << std::endl;
     
