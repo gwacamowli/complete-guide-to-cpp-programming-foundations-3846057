@@ -1,6 +1,7 @@
-// Complete Guide to C++ Programming Foundations
-// Exercise 07_02
-// Data Members, by Eduardo Corpeño 
+#pragma once // vs supports this, but not other compilers do.
+
+#ifndef INVENTORY_H
+#define INVENTORY_H
 
 #include <iostream>
 #include <vector>
@@ -10,8 +11,7 @@
 class Inventory{
 public:
     // Default Constructor
-    Inventory(){
-        capacity = 10;
+    Inventory(): capacity(capacity){
         items = new std::vector<std::string>();
     }
 
@@ -22,7 +22,7 @@ public:
 
     // Destructor
     ~Inventory(){
-        delete items;
+        delete items; // Prevent memory leak by deallocating the dynamic vector
     }
 
     // Add item to inventory
@@ -33,9 +33,9 @@ public:
             std::cout << "Inventory is full, cannot add " << item << std::endl;
     }
 
-    // Remove item
+    // Remove item from inventory
     void removeItem(const std::string& item){
-        auto it = std::find(items->begin(), items->end(), item); // finds item in items (from start of vector to the end)
+        auto it = std::find(items->begin(), items->end(), item);
         if (it != items->end())
             items->erase(it);
         else
@@ -44,7 +44,7 @@ public:
 
     // Access item by index
     std::string getItem(int index) const{
-        if (index <= 0 && index < items->size())
+        if (index >= 0 && index < items->size())
             return (*items)[index];
         else
             return "Index out of bounds";
@@ -58,19 +58,16 @@ public:
     // Display inventory contents
     void displayInventory() const{
         std::cout << "Inventory: [ ";
-        for (size_t i = 0; i < items->size(); i++){
+        for (size_t i = 0; i < items->size(); ++i){
             std::cout << (*items)[i];
             if (i < items->size() - 1) std::cout << ", ";
         }
+        std::cout << " ]" << std::endl;
     }
 
 private:
-    std::vector<std::string> *items; // Pointer to vector of items
-    int capacity; // Max number of items allowed
+    std::vector<std::string> *items; // Pointer to a vector of items
+    int capacity; // Maximum number of items allowed
 };
 
-int main(){
-
-    std::cout << std::endl << std::endl;
-    return 0;
-}
+#endif // INVENTORY_H
